@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Serkan Yazıcıoğlu</Authors>
+    <Company>Garaj</Company>
+    <Description>Base repository classes for MongoDb.</Description>
+    <PackageTags>repository, nhea, mongodb, nosql</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="Nhea" Version="1.5.1" />
+  </ItemGroup>
+
+</Project>
