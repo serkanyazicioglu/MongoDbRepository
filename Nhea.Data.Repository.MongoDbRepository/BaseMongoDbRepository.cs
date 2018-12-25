@@ -13,14 +13,6 @@ namespace Nhea.Data.Repository.MongoDbRepository
     {
         public abstract string ConnectionString { get; }
 
-        protected virtual string CollectionName
-        {
-            get
-            {
-                return typeof(T).Name;
-            }
-        }
-
         private MongoClient currentClient = null;
         private MongoClient CurrentClient
         {
@@ -35,7 +27,65 @@ namespace Nhea.Data.Repository.MongoDbRepository
             }
         }
 
-        public virtual string DatabaseName => MongoUrl.Create(this.ConnectionString).DatabaseName;
+        public virtual string DefaultDatabaseName => MongoUrl.Create(this.ConnectionString).DatabaseName;
+
+        private string databaseName = null;
+        public string DatabaseName
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(databaseName))
+                {
+                    currentDatabase = null;
+                    currentCollection = null;
+                    this.DirtyCheckItems.Clear();
+                    this.Items.Clear();
+                    databaseName = DefaultDatabaseName;
+                }
+
+                return databaseName;
+            }
+            set
+            {
+                if (databaseName != value)
+                {
+                    currentDatabase = null;
+                    currentCollection = null;
+                    this.DirtyCheckItems.Clear();
+                    this.Items.Clear();
+                    databaseName = value;
+                }
+            }
+        }
+
+        public virtual string DefaultCollectionName => typeof(T).Name;
+
+        private string collectionName = null;
+        public string CollectionName
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(collectionName))
+                {
+                    currentCollection = null;
+                    this.DirtyCheckItems.Clear();
+                    this.Items.Clear();
+                    collectionName = DefaultCollectionName;
+                }
+
+                return collectionName;
+            }
+            set
+            {
+                if (collectionName != value)
+                {
+                    currentCollection = null;
+                    this.DirtyCheckItems.Clear();
+                    this.Items.Clear();
+                    collectionName = value;
+                }
+            }
+        }
 
         private IMongoDatabase currentDatabase = null;
         private IMongoDatabase CurrentDatabase

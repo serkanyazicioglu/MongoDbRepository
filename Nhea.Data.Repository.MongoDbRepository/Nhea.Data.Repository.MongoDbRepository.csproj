@@ -6,6 +6,9 @@
     <Company>Garaj</Company>
     <Description>Base repository classes for MongoDb.</Description>
     <PackageTags>repository, nhea, mongodb, nosql</PackageTags>
+    <Version>1.1.0</Version>
+    <PackageReleaseNotes>Added ability to change databasename and collection name on the fly.</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
