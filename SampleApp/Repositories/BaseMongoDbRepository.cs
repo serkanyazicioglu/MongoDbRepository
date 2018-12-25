@@ -9,6 +9,6 @@ namespace SampleApp.Repositories
     {
         public override string ConnectionString => "mongodb://localhost:27017/admin";
 
-        public override string DefaultDatabaseName => "NheaTestDb";
+        protected override string DefaultDatabaseName => "NheaTestDb";
     }
 }

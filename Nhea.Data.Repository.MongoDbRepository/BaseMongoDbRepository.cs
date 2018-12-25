@@ -27,7 +27,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
             }
         }
 
-        public virtual string DefaultDatabaseName => MongoUrl.Create(this.ConnectionString).DatabaseName;
+        protected virtual string DefaultDatabaseName => MongoUrl.Create(this.ConnectionString).DatabaseName;
 
         private string databaseName = null;
         public string DatabaseName
@@ -58,7 +58,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
             }
         }
 
-        public virtual string DefaultCollectionName => typeof(T).Name;
+        protected virtual string DefaultCollectionName => typeof(T).Name;
 
         private string collectionName = null;
         public string CollectionName

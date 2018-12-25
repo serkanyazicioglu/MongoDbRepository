@@ -16,7 +16,7 @@ https://www.nuget.org/packages/Nhea.Data.Repository.MongoDbRepository/
 Project is built with .NET Standard 2.0
 This project references MongoDb.Driver > 2.7.0
 
-### 1.1.1 What's New
+### 1.1 What's New
 
 Added ability to change database name and collection name on the fly. 
 
