@@ -72,15 +72,11 @@ namespace SampleApp
 
             using (MemberRepository memberRepository = new MemberRepository())
             {
+                memberRepository.GetAll();
+
                 memberRepository.DatabaseName = "AnotherDbName";
                 memberRepository.CollectionName = "AnotherCollectionName";
 
-                var member = memberRepository.CreateNew();
-                member._id = newMemberId;
-                member.Title = "Test Member";
-                member.UserName = "username";
-                member.Password = "password";
-                member.Email = "test@test.com";
                 memberRepository.Save();
             }
 

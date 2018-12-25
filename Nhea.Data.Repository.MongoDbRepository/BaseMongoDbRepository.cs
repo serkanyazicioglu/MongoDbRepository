@@ -39,7 +39,6 @@ namespace Nhea.Data.Repository.MongoDbRepository
                     currentDatabase = null;
                     currentCollection = null;
                     this.DirtyCheckItems.Clear();
-                    this.Items.Clear();
                     databaseName = DefaultDatabaseName;
                 }
 
@@ -52,7 +51,6 @@ namespace Nhea.Data.Repository.MongoDbRepository
                     currentDatabase = null;
                     currentCollection = null;
                     this.DirtyCheckItems.Clear();
-                    this.Items.Clear();
                     databaseName = value;
                 }
             }
@@ -69,7 +67,6 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 {
                     currentCollection = null;
                     this.DirtyCheckItems.Clear();
-                    this.Items.Clear();
                     collectionName = DefaultCollectionName;
                 }
 
@@ -81,7 +78,6 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 {
                     currentCollection = null;
                     this.DirtyCheckItems.Clear();
-                    this.Items.Clear();
                     collectionName = value;
                 }
             }
@@ -115,7 +111,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
             }
         }
 
-        private Dictionary<ObjectId, T> Items = new Dictionary<ObjectId, T>();
+        public Dictionary<ObjectId, T> Items = new Dictionary<ObjectId, T>();
 
         private Dictionary<ObjectId, string> DirtyCheckItems = new Dictionary<ObjectId, string>();
 
