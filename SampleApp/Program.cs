@@ -11,6 +11,10 @@ namespace SampleApp
     {
         static void Main(string[] args)
         {
+            //Use this only when you have replication enabled
+            //var subscribingRepository = MemberRepository.GetSubscribingRepository();
+            //subscribingRepository.SubscriptionTriggered += SubscribingRepository_SubscriptionTriggered;
+
             ObjectId newMemberId = ObjectId.GenerateNewId();
 
             using (MemberRepository memberRepository = new MemberRepository())
@@ -81,6 +85,12 @@ namespace SampleApp
             }
 
             Console.WriteLine("Job done!");
+            Console.ReadLine();
+        }
+
+        private static void SubscribingRepository_SubscriptionTriggered(object sender, Member entity)
+        {
+            Console.WriteLine("Subscription triggered: " + entity.Title);
         }
     }
 }
