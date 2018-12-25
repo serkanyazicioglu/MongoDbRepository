@@ -19,5 +19,5 @@ This project references MongoDb.Driver > 2.7.0
 ### 1.1.1 What's New
 
 Added ability to change database name and collection name on the fly. 
-[!breaking]
+
 Previous virtual DatabaseName is now DefaultDatabaseName and CollectionName is now DefaultCollectionName.
