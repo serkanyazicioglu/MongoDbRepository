@@ -11,6 +11,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/serkanyazicioglu/MongoDbRepository</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/serkanyazicioglu/MongoDbRepository</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

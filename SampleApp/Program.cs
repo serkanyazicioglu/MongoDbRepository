@@ -11,7 +11,7 @@ namespace SampleApp
     {
         static void Main(string[] args)
         {
-            //Use this only when you have replication enabled
+            ////Use this only when you have replication enabled
             //var subscribingRepository = MemberRepository.GetSubscribingRepository();
             //subscribingRepository.SubscriptionTriggered += SubscribingRepository_SubscriptionTriggered;
 
