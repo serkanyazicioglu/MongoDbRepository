@@ -35,7 +35,7 @@ public abstract class BaseMongoDbRepository<T> : Nhea.Data.Repository.MongoDbRep
     protected override string DefaultDatabaseName => "NheaTestDb";
 }
 ```
-You may remove the abstract modifier if you want to use generic repositories or you may create individual repository classes for your tables if you want to set specific properties for that object.
+You may remove the abstract modifier if you want to use generic repositories or you may create individual repository classes for your documents if you want to set specific properties for that object.
 ```
 public partial class Member : MongoDocument
 {
@@ -138,6 +138,17 @@ using (MemberRepository memberRepository = new MemberRepository())
     memberRepository.Save();
 }
 ```
+### Dynamic attributes
+
+Nhea repositories kinda rely on strict document types because of object mapping. You may add custom Bson object by specifing BsonDocumet properties.
+```
+[BsonExtraElements]
+public BsonDocument AttributeValue { get; set; }
+```
+```
+member.AttributeValue.Add("CustomJsonData", jsonData.ToString());
+```
+
 ### Subscription
 In order to use this feature your mongo db server must have replication enabled. Mongo servers send messages between these servers to duplicate datas so we actually use this channels for listening document changes.
 
