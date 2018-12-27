@@ -141,7 +141,7 @@ using (MemberRepository memberRepository = new MemberRepository())
 ```
 ### Dynamic attributes
 
-Repositories rely on strict document types because of object mapping. You may add custom Bson objects by specifing BsonDocumet properties.
+Repositories rely on strict document types because of object mapping. You may add custom Bson objects by specifing BsonDocument properties.
 ```
 [BsonExtraElements]
 public BsonDocument AttributeValue { get; set; }
@@ -151,7 +151,7 @@ member.AttributeValue.Add("CustomJsonData", jsonData.ToString());
 ```
 
 ### Subscription
-In order to use this feature your mongo db server must have replication enabled. Mongo servers send messages between these servers to duplicate datas so we actually use this channels for listening document changes.
+In order to use this feature your MongoDb server must have replication enabled. MongoDb servers send messages between these servers to duplicate datas so we actually use this channels for listening document changes.
 
 First you have to get an instance of subscribing repository. This is a static instance so you will get the same object everytime you call this method. Later bind an event to 'SubscriptionTriggered'.
 ```
