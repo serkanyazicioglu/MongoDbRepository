@@ -140,7 +140,7 @@ using (MemberRepository memberRepository = new MemberRepository())
 ```
 ### Dynamic attributes
 
-Nhea repositories kinda rely on strict document types because of object mapping. You may add custom Bson object by specifing BsonDocumet properties.
+Repositories rely on strict document types because of object mapping. You may add custom Bson objects by specifing BsonDocumet properties.
 ```
 [BsonExtraElements]
 public BsonDocument AttributeValue { get; set; }
