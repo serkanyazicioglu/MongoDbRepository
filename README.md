@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/serkanyazicioglu/MongoDbRepository.svg?branch=master)](https://travis-ci.org/serkanyazicioglu/MongoDbRepository)
 [![NuGet](https://img.shields.io/nuget/v/Nhea.Data.Repository.MongoDbRepository.svg)](https://www.nuget.org/packages/Nhea.Data.Repository.MongoDbRepository/)
 
 # Nhea MongoDb Repository
