@@ -17,6 +17,7 @@ namespace SampleApp
 
             ObjectId newMemberId = ObjectId.GenerateNewId();
 
+            //New Entity
             using (MemberRepository memberRepository = new MemberRepository())
             {
                 var member = memberRepository.CreateNew();
@@ -28,6 +29,7 @@ namespace SampleApp
                 memberRepository.Save();
             }
 
+            //Update Multiple Entity
             using (MemberRepository memberRepository = new MemberRepository())
             {
                 var members = memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToList();
@@ -40,6 +42,7 @@ namespace SampleApp
                 memberRepository.Save();
             }
 
+            //Update Single Entity By Id
             using (MemberRepository memberRepository = new MemberRepository())
             {
                 var member = memberRepository.GetById(newMemberId);
@@ -51,6 +54,7 @@ namespace SampleApp
                 }
             }
 
+            //Update Single Entity By Query
             using (MemberRepository memberRepository = new MemberRepository())
             {
                 var member = memberRepository.GetSingle(query => query.Title == "Selected Member");
@@ -62,18 +66,21 @@ namespace SampleApp
                 }
             }
 
+            //Delete Entity
             using (MemberRepository memberRepository = new MemberRepository())
             {
                 memberRepository.Delete(query => query.Title == "Selected Member 2");
                 memberRepository.Save();
             }
 
+            //IsNew
             using (MemberRepository memberRepository = new MemberRepository())
             {
                 var member = memberRepository.CreateNew();
-                bool isNew = memberRepository.IsNew(member);
+                Console.WriteLine("Is my entity new? Answer: " + memberRepository.IsNew(member));
             }
 
+            //Get Multiple
             using (MemberRepository memberRepository = new MemberRepository())
             {
                 memberRepository.GetAll();
