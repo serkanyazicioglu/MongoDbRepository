@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/serkanyazicioglu/MongoDbRepository.svg?branch=master)](https://travis-ci.com/serkanyazicioglu/MongoDbRepository)
+[![Build Status](https://dev.azure.com/serkanyazicioglu/serkanyazicioglu/_apis/build/status/serkanyazicioglu.MongoDbRepository?branchName=master)](https://dev.azure.com/serkanyazicioglu/serkanyazicioglu/_build/latest?definitionId=3&branchName=master)
 [![NuGet](https://img.shields.io/nuget/v/Nhea.Data.Repository.MongoDbRepository.svg)](https://www.nuget.org/packages/Nhea.Data.Repository.MongoDbRepository/)
 
 # Nhea MongoDb Repository
@@ -12,11 +12,17 @@ Nhea MongoDb Repository is on NuGet. You may install Nhea MongoDb Repository via
 
 https://www.nuget.org/packages/Nhea.Data.Repository.MongoDbRepository/
 
+```
+Install-Package Nhea.Data.Repository.MongoDbRepository
+```
+
 ### Prerequisites
 
 Project is built with .NET Standard 2.0
 
-This project references MongoDb.Driver > 2.7.0
+This project references 
+-	Nhea > 1.5.1
+-	MongoDb.Driver > 2.7.0
 
 ### 1.1 What's New
 
@@ -26,7 +32,7 @@ Previous virtual DatabaseName is now DefaultDatabaseName and CollectionName is n
 
 ### Configuration
 
-First of all creating a base repository class is a good idea to set basic properties.
+First of all creating a base repository class is a good idea to set basic properties like connection string.
 
 ```
 public abstract class BaseMongoDbRepository<T> : Nhea.Data.Repository.MongoDbRepository.BaseMongoDbRepository<T> where T : MongoDocument, new()
@@ -36,7 +42,7 @@ public abstract class BaseMongoDbRepository<T> : Nhea.Data.Repository.MongoDbRep
     protected override string DefaultDatabaseName => "NheaTestDb";
 }
 ```
-You may remove the abstract modifier if you want to use generic repositories or you may create individual repository classes for your documents if you want to set specific properties for that object.
+You may remove the abstract modifier if you want to use generic repositories or you may create individual repository classes for each of your objects if you need to set specific properties.
 ```
 public partial class Member : MongoDocument
 {
