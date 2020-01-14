@@ -323,9 +323,18 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 {
                     if (HasChanges(item))
                     {
+                        bool isNew = this.IsNew(item);
+
                         item.ModifyDate = DateTime.Now;
 
-                        var replaceOneResult = CurrentCollection.ReplaceOne(query => query._id == item._id, item, new UpdateOptions { IsUpsert = true });
+                        if (isNew)
+                        {
+                            CurrentCollection.InsertOne(item);
+                        }
+                        else
+                        {
+                            var replaceOneResult = CurrentCollection.ReplaceOne(query => query._id == item._id, item, new UpdateOptions { IsUpsert = true });
+                        }
 
                         if (DirtyCheckItems.ContainsKey(item._id))
                         {

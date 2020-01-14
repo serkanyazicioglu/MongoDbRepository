@@ -12,18 +12,19 @@ namespace TestProject
         [TestMethod]
         public void TestAll()
         {
-            ObjectId newMemberId = ObjectId.GenerateNewId();
+            ObjectId newMemberId = ObjectId.Empty;
 
             //New Entity
             using (MemberRepository memberRepository = new MemberRepository())
             {
                 var member = memberRepository.CreateNew();
-                member._id = newMemberId;
                 member.Title = "Test Member";
                 member.UserName = "username";
                 member.Password = "password";
                 member.Email = "test@test.com";
                 memberRepository.Save();
+
+                newMemberId = member._id;
             }
 
             //Update Multiple Entity
