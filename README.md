@@ -24,6 +24,14 @@ This project references
 -	Nhea > 2.0.0.4
 -	MongoDb.Driver > 2.10.4
 
+### 2.0 What's New
+
+Migrated to .Net Standard 2.1
+
+All methods now have async versions.
+
+Added a readonly option for fetched data.
+
 ### 1.1 What's New
 
 Added ability to change database name and collection name on the fly. 
