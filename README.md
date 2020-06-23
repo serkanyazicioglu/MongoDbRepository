@@ -18,11 +18,11 @@ Install-Package Nhea.Data.Repository.MongoDbRepository
 
 ### Prerequisites
 
-Project is built with .NET Standard 2.0
+Project is built with .NET Standard 2.1
 
 This project references 
--	Nhea > 1.5.1
--	MongoDb.Driver > 2.7.0
+-	Nhea > 2.0.0.4
+-	MongoDb.Driver > 2.10.4
 
 ### 1.1 What's New
 
