@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Nhea.Data.Repository.MongoDbRepository
@@ -132,6 +133,11 @@ namespace Nhea.Data.Repository.MongoDbRepository
 
         private void AddCore(T entity, bool isNew)
         {
+            if (this.IsReadOnly)
+            {
+                return;
+            }
+
             lock (lockObject)
             {
                 if (entity != null)
@@ -156,6 +162,11 @@ namespace Nhea.Data.Repository.MongoDbRepository
 
         public void Remove(T entity)
         {
+            if (this.IsReadOnly)
+            {
+                return;
+            }
+
             lock (lockObject)
             {
                 if (entity != null)
@@ -181,6 +192,20 @@ namespace Nhea.Data.Repository.MongoDbRepository
             return entity;
         }
 
+        public override async Task<T> GetByIdAsync(object id)
+        {
+            string idParsed = id.ToString();
+
+            var entity = await GetByIdCoreAsync(idParsed);
+
+            if (entity != null)
+            {
+                this.AddCore(entity, false);
+            }
+
+            return entity;
+        }
+
         private T GetByIdCore(string id)
         {
             return GetByIdCore(ObjectId.Parse(id));
@@ -191,6 +216,16 @@ namespace Nhea.Data.Repository.MongoDbRepository
             return CurrentCollection.Find(query => query._id == id).FirstOrDefault();
         }
 
+        private async Task<T> GetByIdCoreAsync(string id)
+        {
+            return await GetByIdCoreAsync(ObjectId.Parse(id));
+        }
+
+        private async Task<T> GetByIdCoreAsync(ObjectId id)
+        {
+            return await CurrentCollection.Find(query => query._id == id).FirstOrDefaultAsync();
+        }
+
         protected override T GetSingleCore(System.Linq.Expressions.Expression<Func<T, bool>> filter, bool getDefaultFilter)
         {
             if (getDefaultFilter)
@@ -199,6 +234,23 @@ namespace Nhea.Data.Repository.MongoDbRepository
             }
 
             var entity = CurrentCollection.Find(filter).SingleOrDefault();
+
+            if (entity != null)
+            {
+                this.AddCore(entity, false);
+            }
+
+            return entity;
+        }
+
+        protected override async Task<T> GetSingleCoreAsync(System.Linq.Expressions.Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            if (getDefaultFilter)
+            {
+                filter = filter.And(this.DefaultFilter);
+            }
+
+            var entity = await CurrentCollection.Find(filter).SingleOrDefaultAsync();
 
             if (entity != null)
             {
@@ -313,74 +365,113 @@ namespace Nhea.Data.Repository.MongoDbRepository
 
         public override void Save()
         {
+            if (this.IsReadOnly)
+            {
+                return;
+            }
+
             var savingList = Items.Values.ToList();
 
             for (int i = 0; i < savingList.Count(); i++)
             {
                 var item = savingList[i];
 
-                try
+                if (HasChanges(item))
                 {
-                    if (HasChanges(item))
+                    bool isNew = this.IsNew(item);
+
+                    item.ModifyDate = DateTime.Now;
+
+                    if (isNew)
                     {
-                        bool isNew = this.IsNew(item);
-
-                        item.ModifyDate = DateTime.Now;
-
-                        if (isNew)
-                        {
-                            CurrentCollection.InsertOne(item);
-                        }
-                        else
-                        {
-                            var replaceOneResult = CurrentCollection.ReplaceOne(query => query._id == item._id, item, new UpdateOptions { IsUpsert = true });
-                        }
-
-                        if (DirtyCheckItems.ContainsKey(item._id))
-                        {
-                            DirtyCheckItems.Remove(item._id);
-                        }
-
-                        DirtyCheckItems.Add(item._id, item.ToJson());
+                        CurrentCollection.InsertOne(item);
                     }
-                }
-                catch (Exception ex)
-                {
-                    ex.Data.Add("Id", item._id.ToString());
-                    Logger.Log(ex);
-                    throw;
+                    else
+                    {
+                        var replaceOneResult = CurrentCollection.ReplaceOne(query => query._id == item._id, item, new ReplaceOptions { IsUpsert = true });
+                    }
+
+                    if (DirtyCheckItems.ContainsKey(item._id))
+                    {
+                        DirtyCheckItems.Remove(item._id);
+                    }
+
+                    DirtyCheckItems.Add(item._id, item.ToJson());
                 }
             }
+        }
+
+        public override async Task SaveAsync()
+        {
+            if (!this.IsReadOnly)
+            {
+                return;
+            }
+
+            var savingList = Items.Values.ToList();
+
+            for (int i = 0; i < savingList.Count(); i++)
+            {
+                var item = savingList[i];
+
+                if (HasChanges(item))
+                {
+                    bool isNew = this.IsNew(item);
+
+                    item.ModifyDate = DateTime.Now;
+
+                    if (isNew)
+                    {
+                        await CurrentCollection.InsertOneAsync(item);
+                    }
+                    else
+                    {
+                        var replaceOneResult = await CurrentCollection.ReplaceOneAsync(query => query._id == item._id, item, new ReplaceOptions { IsUpsert = true });
+                    }
+
+                    if (DirtyCheckItems.ContainsKey(item._id))
+                    {
+                        DirtyCheckItems.Remove(item._id);
+                    }
+
+                    DirtyCheckItems.Add(item._id, item.ToJson());
+                }
+            }
+        }
+
+        private Expression<Func<T, bool>> SetFilter(Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            if (getDefaultFilter && DefaultFilter != null)
+            {
+                filter = filter.And(DefaultFilter);
+            }
+
+            if (filter == null)
+            {
+                filter = query => true;
+            }
+
+            return filter;
         }
 
         protected override bool AnyCore(System.Linq.Expressions.Expression<Func<T, bool>> filter, bool getDefaultFilter)
         {
-            if (getDefaultFilter && this.DefaultFilter != null)
-            {
-                filter = filter.And(this.DefaultFilter);
-            }
+            return CurrentCollection.CountDocuments(SetFilter(filter, getDefaultFilter)) > 0;
+        }
 
-            if (filter == null)
-            {
-                filter = query => true;
-            }
-
-            return CurrentCollection.CountDocuments(filter) > 0;
+        protected override async Task<bool> AnyCoreAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            return await CurrentCollection.CountDocumentsAsync(SetFilter(filter, getDefaultFilter)) > 0;
         }
 
         protected override int CountCore(System.Linq.Expressions.Expression<Func<T, bool>> filter, bool getDefaultFilter)
         {
-            if (getDefaultFilter && this.DefaultFilter != null)
-            {
-                filter = filter.And(this.DefaultFilter);
-            }
+            return Convert.ToInt32(CurrentCollection.CountDocuments(SetFilter(filter, getDefaultFilter)));
+        }
 
-            if (filter == null)
-            {
-                filter = query => true;
-            }
-
-            return Convert.ToInt32(CurrentCollection.CountDocuments(filter));
+        protected override async Task<int> CountCoreAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            return Convert.ToInt32(await CurrentCollection.CountDocumentsAsync(SetFilter(filter, getDefaultFilter)));
         }
 
         public delegate void SubscriptionTriggeredEventHandler(object sender, T entity);

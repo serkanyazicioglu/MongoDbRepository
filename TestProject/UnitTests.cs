@@ -1,5 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Bson;
+using MongoDB.Driver;
+using Nhea.Data.Repository.MongoDbRepository;
 using System;
 using System.Linq;
 using TestProject.Repositories;
@@ -10,7 +12,7 @@ namespace TestProject
     public class UnitTests
     {
         [TestMethod]
-        public void TestAll()
+        public async void TestAll()
         {
             ObjectId newMemberId = ObjectId.Empty;
 
@@ -30,7 +32,7 @@ namespace TestProject
             //Update Multiple Entity
             using (MemberRepository memberRepository = new MemberRepository())
             {
-                var members = memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToList();
+                var members = await memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToMongoQueryable().ToListAsync();
 
                 foreach (var member in members)
                 {

@@ -145,6 +145,23 @@ using (MemberRepository memberRepository = new MemberRepository())
     memberRepository.Save();
 }
 ```
+### Async List
+
+You can use all methods with usual async sytnax but Mongo has it's own collection type for async collection fetching. You can use ToMongoQueryable extension method for conversion.
+```
+using (MemberRepository memberRepository = new MemberRepository())
+{
+    var members = await memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToMongoQueryable().ToListAsync();
+}
+```
+Or you can use ToMongoListAsync directly.
+```
+using (MemberRepository memberRepository = new MemberRepository())
+{
+    var members = await memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToMongoListAsync();
+}
+```
+
 ### Dynamic attributes
 
 Repositories rely on strict document types because of object mapping. You may add custom Bson objects by specifing BsonDocument properties.
