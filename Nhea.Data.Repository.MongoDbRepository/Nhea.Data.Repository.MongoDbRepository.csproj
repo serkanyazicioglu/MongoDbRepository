@@ -6,7 +6,7 @@
     <Company>Serkan Yazıcıoğlu</Company>
     <Description>Base repository classes for MongoDb.</Description>
     <PackageTags>repository, nhea, mongodb, nosql</PackageTags>
-    <Version>2.0.0</Version>
+    <Version>2.0.0.1</Version>
     <PackageReleaseNotes>MongoDb Repository is now .Net Standard 2.1
 - Added async methods
 - Added readonly constructor parameter</PackageReleaseNotes>
