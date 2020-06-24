@@ -152,20 +152,32 @@ using (MemberRepository memberRepository = new MemberRepository())
 ```
 ### Async List
 
-You can use all methods with usual async sytnax but Mongo has it's own collection type for async collection fetching. You can use ToMongoQueryable extension method for conversion.
-```
-using (MemberRepository memberRepository = new MemberRepository())
-{
-    var members = await memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToMongoQueryable().ToListAsync();
-}
-```
-Or you can use ToMongoListAsync directly.
+You can use all methods with usual async sytnax but Mongo has it's own collection type for async collection fetching. You can use ToMongoListAsync extension method instead.
 ```
 using (MemberRepository memberRepository = new MemberRepository())
 {
     var members = await memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToMongoListAsync();
 }
 ```
+### ReadOnly Mode
+
+You can set readonly mode for repositories. This may increase the performance when you don't need the data to be updated. Simply set a constructor on your repository to pass the isReadOnly parameter to base repo.
+```
+public MemberRepository(bool isReadOnly = false)
+    : base(isReadOnly)
+{
+}
+```
+```
+//Switch to readonly
+using (MemberRepository memberRepository = new MemberRepository(isReadOnly: true))
+{
+    var member = await memberRepository.GetByIdAsync(newMemberId);
+    member.Title = "You shall not change";
+    await memberRepository.SaveAsync();
+}
+```
+
 
 ### Dynamic attributes
 

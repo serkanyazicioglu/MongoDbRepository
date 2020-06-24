@@ -10,12 +10,22 @@ namespace Nhea.Data.Repository.MongoDbRepository
     {
         public static async Task<List<T>> ToMongoListAsync<T>(this IQueryable<T> mongoQueryOnly)
         {
+            if (mongoQueryOnly is EnumerableQuery)
+            {
+                return mongoQueryOnly.ToList();
+            }
+
             return await mongoQueryOnly.ToMongoQueryable().ToListAsync();
         }
 
-        public static IMongoQueryable<T> ToMongoQueryable<T>(this IQueryable<T> mongoQueryOnly)
+        private static IMongoQueryable<T> ToMongoQueryable<T>(this IQueryable<T> mongoQueryOnly)
         {
             return (IMongoQueryable<T>)mongoQueryOnly;
         }
+
+        //public static IMongoQueryable<T> ToMongoQueryable<T>(this List<T> mongoQueryOnly)
+        //{
+        //    return (IMongoQueryable<T>)mongoQueryOnly;
+        //}
     }
 }

@@ -23,6 +23,11 @@ namespace TestProject.Repositories
 
     public class MemberRepository : BaseMongoDbRepository<Member>
     {
+        public MemberRepository(bool isReadOnly = false)
+               : base(isReadOnly)
+        {
+        }
+
         public override Member CreateNew()
         {
             var entity = base.CreateNew();

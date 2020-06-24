@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Nhea.Logging;
 using System;
 using System.Collections.Concurrent;
@@ -10,8 +11,13 @@ using System.Threading.Tasks;
 
 namespace Nhea.Data.Repository.MongoDbRepository
 {
-    public abstract class BaseMongoDbRepository<T> : Nhea.Data.Repository.BaseRepository<T>, IDisposable where T : MongoDocument, new()
+    public abstract class BaseMongoDbRepository<T> : Nhea.Data.Repository.BaseRepository<T> where T : MongoDocument, new()
     {
+        public BaseMongoDbRepository(bool isReadOnly = false)
+            : base(isReadOnly)
+        {
+        }
+
         public abstract string ConnectionString { get; }
 
         private MongoClient currentClient = null;
@@ -267,12 +273,12 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 filter = filter.And(this.DefaultFilter);
             }
 
-            if (filter == null)
-            {
-                filter = query => true;
-            }
+            IQueryable<T> returnList = CurrentCollection.AsQueryable();
 
-            IQueryable<T> returnList = CurrentCollection.AsQueryable().Where(filter);
+            if (filter != null)
+            {
+                returnList = returnList.Where(filter);
+            }
 
             if (!String.IsNullOrEmpty(sortColumn))
             {
@@ -302,9 +308,14 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 returnList = returnList.Skip<T>(skipCount).Take<T>(pageSize);
             }
 
-            foreach (var entity in returnList)
+            if (!this.IsReadOnly)
             {
-                this.AddCore(entity, false);
+                returnList = returnList.ToList().AsQueryable();
+
+                foreach (var entity in returnList)
+                {
+                    this.AddCore(entity, false);
+                }
             }
 
             return returnList;
@@ -325,11 +336,21 @@ namespace Nhea.Data.Repository.MongoDbRepository
 
         public override void Delete(System.Linq.Expressions.Expression<Func<T, bool>> filter)
         {
+            if (this.IsReadOnly)
+            {
+                return;
+            }
+
             CurrentCollection.DeleteMany(filter);
         }
 
         public override void Delete(T entity)
         {
+            if (this.IsReadOnly)
+            {
+                return;
+            }
+
             CurrentCollection.DeleteOne(query => query._id == entity._id);
         }
 
@@ -403,7 +424,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
 
         public override async Task SaveAsync()
         {
-            if (!this.IsReadOnly)
+            if (this.IsReadOnly)
             {
                 return;
             }
