@@ -272,7 +272,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 filter = query => true;
             }
 
-            IQueryable<T> returnList = CurrentCollection.Find(filter).ToList().AsQueryable();
+            IQueryable<T> returnList = CurrentCollection.AsQueryable().Where(filter);
 
             if (!String.IsNullOrEmpty(sortColumn))
             {
