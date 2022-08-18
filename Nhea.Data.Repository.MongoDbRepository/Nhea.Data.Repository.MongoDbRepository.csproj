@@ -1,24 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Authors>Serkan Yazıcıoğlu</Authors>
-    <Company>Serkan Yazıcıoğlu</Company>
-    <Description>Base repository classes for MongoDb.</Description>
-    <PackageTags>repository, nhea, mongodb, nosql</PackageTags>
-    <Version>2.0.0.1</Version>
-    <PackageReleaseNotes>MongoDb Repository is now .Net Standard 2.1
-- Added async methods
-- Added readonly constructor parameter</PackageReleaseNotes>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/serkanyazicioglu/MongoDbRepository</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/serkanyazicioglu/MongoDbRepository</PackageProjectUrl>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Authors>Serkan Yazıcıoğlu</Authors>
+		<Company>Serkan Yazıcıoğlu</Company>
+		<Description>Base repository classes for MongoDb.</Description>
+		<PackageTags>repository, nhea, mongodb, nosql</PackageTags>
+		<Version>2.0.0.1</Version>
+		<PackageReleaseNotes>
+			MongoDb Repository is now .Net 6
+			- Updated related packages
+		</PackageReleaseNotes>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/serkanyazicioglu/MongoDbRepository</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/serkanyazicioglu/MongoDbRepository</PackageProjectUrl>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
-    <PackageReference Include="Nhea" Version="2.0.0.4" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MongoDB.Driver" Version="2.17.1" />
+		<PackageReference Include="Nhea" Version="3.0.0" />
+	</ItemGroup>
 
 </Project>
