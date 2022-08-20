@@ -30,7 +30,7 @@ public abstract class BaseMongoDbRepository<T> : Nhea.Data.Repository.MongoDbRep
 {
     public override string ConnectionString => "mongodb://localhost:27017/admin";
 
-    protected override string DefaultDatabaseName => "NheaTestDb";
+    protected override string DefaultDatabaseName => "TestDb";
 }
 ```
 You may remove the abstract modifier if you want to use generic repositories or you may create individual repository classes for each of your objects if you need to set specific properties.
