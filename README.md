@@ -19,22 +19,7 @@ Install-Package Nhea.Data.Repository.MongoDbRepository
 
 ### Prerequisites
 
-Project is built with .NET Standard 2.1
-
-This project references 
--	Nhea > 2.0.0.4
--	MongoDb.Driver > 2.10.4
-
-### v2.0 What's New
-
--   Migrated to .Net Standard 2.1.
--   All methods now have async versions.
--   Added a readonly option for fetched data.
-
-### v1.1 What's New
-
--   Added ability to change database name and collection name on the fly.
--   Previous virtual DatabaseName is now DefaultDatabaseName and CollectionName is now DefaultCollectionName.
+Project is built with .NET 6.
 
 ### Configuration
 
