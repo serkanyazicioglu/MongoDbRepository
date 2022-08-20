@@ -1,4 +1,4 @@
-[![.NET](https://github.com/serkanyazicioglu/MongoDbRepository/actions/workflows/main.yml/badge.svg)](https://github.com/serkanyazicioglu/MongoDbRepository/actions/workflows/main.yml)
+[![.NET](https://github.com/serkanyazicioglu/MongoDbRepository/actions/workflows/dotnet-pipeline.yml/badge.svg)](https://github.com/serkanyazicioglu/MongoDbRepository/actions/workflows/dotnet-pipeline.yml)
 [![NuGet](https://img.shields.io/nuget/v/Nhea.Data.Repository.MongoDbRepository.svg)](https://www.nuget.org/packages/Nhea.Data.Repository.MongoDbRepository/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nhea_MongoDbRepository&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nhea_MongoDbRepository)
 
