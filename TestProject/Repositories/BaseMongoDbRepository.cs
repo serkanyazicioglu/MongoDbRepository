@@ -1,7 +1,4 @@
 ﻿using Nhea.Data.Repository.MongoDbRepository;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TestProject.Repositories
 {

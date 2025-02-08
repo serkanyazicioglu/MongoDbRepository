@@ -1,6 +1,5 @@
 [![.NET](https://github.com/serkanyazicioglu/MongoDbRepository/actions/workflows/dotnet-pipeline.yml/badge.svg)](https://github.com/serkanyazicioglu/MongoDbRepository/actions/workflows/dotnet-pipeline.yml)
 [![NuGet](https://img.shields.io/nuget/v/Nhea.Data.Repository.MongoDbRepository.svg)](https://www.nuget.org/packages/Nhea.Data.Repository.MongoDbRepository/)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nhea_MongoDbRepository&metric=alert_status)](https://sonarcloud.io/project/overview?id=nhea_MongoDbRepository)
 
 # Nhea MongoDb Repository
 
@@ -19,7 +18,7 @@ Install-Package Nhea.Data.Repository.MongoDbRepository
 
 ### Prerequisites
 
-Project is built with .NET 6.
+Project is built with .NET 9.0.
 
 ### Configuration
 

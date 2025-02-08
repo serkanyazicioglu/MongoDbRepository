@@ -1,9 +1,4 @@
-﻿using Nhea.Data;
-using Nhea.Data.Repository.MongoDbRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+﻿using Nhea.Data.Repository.MongoDbRepository;
 
 namespace TestProject.Repositories
 {

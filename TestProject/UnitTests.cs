@@ -16,9 +16,10 @@ namespace TestProject
         public void TestAllSync()
         {
             ObjectId newMemberId = ObjectId.Empty;
+            ObjectId today = ObjectId.GenerateNewId(DateTime.Today);
 
             //New Entity
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.CreateNew();
                 member.Title = "Test Member";
@@ -31,9 +32,9 @@ namespace TestProject
             }
 
             //Update Multiple Entity
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
-                var members = memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToList();
+                var members = memberRepository.GetAll(query => query._id >= today).ToList();
 
                 Assert.IsTrue(members.Any());
 
@@ -45,7 +46,7 @@ namespace TestProject
                 memberRepository.Save();
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.GetById(newMemberId);
 
@@ -53,14 +54,14 @@ namespace TestProject
             }
 
             //Switch to readonly
-            using (MemberRepository memberRepository = new MemberRepository(isReadOnly: true))
+            using (MemberRepository memberRepository = new(isReadOnly: true))
             {
                 var member = memberRepository.GetById(newMemberId);
                 member.Title = "You shall not change";
                 memberRepository.Save();
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.GetById(newMemberId);
 
@@ -68,7 +69,7 @@ namespace TestProject
             }
 
             //Update Single Entity By Id
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.GetById(newMemberId);
 
@@ -81,7 +82,7 @@ namespace TestProject
                 }
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.GetById(newMemberId);
 
@@ -89,7 +90,7 @@ namespace TestProject
             }
 
             //Update Single Entity By Query
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.GetSingle(query => query.Title == "Selected Member");
 
@@ -103,20 +104,20 @@ namespace TestProject
             }
 
             //Delete Entity
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 memberRepository.Delete(query => query.Title == "Selected Member 2");
                 memberRepository.Save();
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var doesCurrentMemberExist = memberRepository.Any(query => query._id == newMemberId);
 
                 Assert.IsFalse(doesCurrentMemberExist);
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var allMembers = memberRepository.GetAll().ToList();
 
@@ -126,14 +127,14 @@ namespace TestProject
             }
 
             //IsNew
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.CreateNew();
                 Console.WriteLine("Is my entity new? Answer: " + memberRepository.IsNew(member));
             }
 
             //Get Multiple & Migrate to Another Db
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 memberRepository.GetAll();
 
@@ -152,9 +153,10 @@ namespace TestProject
         public async Task TestAllAsync()
         {
             ObjectId newMemberId = ObjectId.Empty;
+            ObjectId today = ObjectId.GenerateNewId(DateTime.Today);
 
             //New Entity
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.CreateNew();
                 member.Title = "Test Member";
@@ -167,9 +169,9 @@ namespace TestProject
             }
 
             //Update Multiple Entity
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
-                var members = await memberRepository.GetAll(query => query._id >= new ObjectId(DateTime.Today, 0, 0, 0)).ToMongoListAsync();
+                var members = await memberRepository.GetAll(query => query._id >= today).ToMongoListAsync();
 
                 Assert.IsTrue(members.Any());
 
@@ -181,7 +183,7 @@ namespace TestProject
                 await memberRepository.SaveAsync();
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = await memberRepository.GetByIdAsync(newMemberId);
 
@@ -189,7 +191,7 @@ namespace TestProject
             }
 
             //Update Single Entity By Id
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = await memberRepository.GetByIdAsync(newMemberId);
 
@@ -202,7 +204,7 @@ namespace TestProject
                 }
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = await memberRepository.GetByIdAsync(newMemberId);
 
@@ -210,14 +212,14 @@ namespace TestProject
             }
 
             //Switch to readonly
-            using (MemberRepository memberRepository = new MemberRepository(isReadOnly: true))
+            using (MemberRepository memberRepository = new(isReadOnly: true))
             {
                 var member = await memberRepository.GetByIdAsync(newMemberId);
                 member.Title = "You shall not change";
                 await memberRepository.SaveAsync();
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = await memberRepository.GetByIdAsync(newMemberId);
 
@@ -225,7 +227,7 @@ namespace TestProject
             }
 
             //Update Single Entity By Query
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = await memberRepository.GetSingleAsync(query => query.Title == "Selected Member");
 
@@ -239,20 +241,20 @@ namespace TestProject
             }
 
             //Delete Entity
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 memberRepository.Delete(query => query.Title == "Selected Member 2");
                 await memberRepository.SaveAsync();
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var doesCurrentMemberExist = await memberRepository.AnyAsync(query => query._id == newMemberId);
 
                 Assert.IsFalse(doesCurrentMemberExist);
             }
 
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var allMembers = await memberRepository.GetAll().ToMongoListAsync();
 
@@ -262,14 +264,14 @@ namespace TestProject
             }
 
             //IsNew
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 var member = memberRepository.CreateNew();
                 Console.WriteLine("Is my entity new? Answer: " + memberRepository.IsNew(member));
             }
 
             //Get Multiple
-            using (MemberRepository memberRepository = new MemberRepository())
+            using (MemberRepository memberRepository = new())
             {
                 memberRepository.GetAll();
 

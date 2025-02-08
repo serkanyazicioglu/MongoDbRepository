@@ -1,9 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Nhea.Logging;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -41,7 +39,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
         {
             get
             {
-                if (String.IsNullOrEmpty(databaseName))
+                if (string.IsNullOrEmpty(databaseName))
                 {
                     currentDatabase = null;
                     currentCollection = null;
@@ -70,7 +68,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
         {
             get
             {
-                if (String.IsNullOrEmpty(collectionName))
+                if (string.IsNullOrEmpty(collectionName))
                 {
                     currentCollection = null;
                     this.DirtyCheckItems.Clear();
@@ -118,11 +116,11 @@ namespace Nhea.Data.Repository.MongoDbRepository
             }
         }
 
-        public Dictionary<ObjectId, T> Items = new Dictionary<ObjectId, T>();
+        public Dictionary<ObjectId, T> Items = new();
 
-        private Dictionary<ObjectId, string> DirtyCheckItems = new Dictionary<ObjectId, string>();
+        private Dictionary<ObjectId, string> DirtyCheckItems = new();
 
-        private object lockObject = new object();
+        private object lockObject = new();
 
         public override T CreateNew()
         {
@@ -181,8 +179,6 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 }
             }
         }
-
-        private static ConcurrentDictionary<string, object> LockObjects = new ConcurrentDictionary<string, object>();
 
         public override T GetById(object id)
         {
@@ -280,7 +276,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 returnList = returnList.Where(filter);
             }
 
-            if (!String.IsNullOrEmpty(sortColumn))
+            if (!string.IsNullOrEmpty(sortColumn))
             {
                 returnList = returnList.Sort(sortColumn, sortDirection);
             }

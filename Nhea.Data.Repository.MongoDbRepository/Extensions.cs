@@ -15,17 +15,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
                 return mongoQueryOnly.ToList();
             }
 
-            return await mongoQueryOnly.ToMongoQueryable().ToListAsync();
+            return await mongoQueryOnly.ToListAsync();
         }
-
-        private static IMongoQueryable<T> ToMongoQueryable<T>(this IQueryable<T> mongoQueryOnly)
-        {
-            return (IMongoQueryable<T>)mongoQueryOnly;
-        }
-
-        //public static IMongoQueryable<T> ToMongoQueryable<T>(this List<T> mongoQueryOnly)
-        //{
-        //    return (IMongoQueryable<T>)mongoQueryOnly;
-        //}
     }
 }
