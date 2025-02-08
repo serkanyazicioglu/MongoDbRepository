@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nhea.Data.Repository.MongoDbRepository
@@ -496,7 +497,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
 
         private static BaseMongoDbRepository<T> CurrentSubscribingRepository = null;
 
-        private static object subscriberLockObject = new object();
+        private static readonly Lock subscriberLockObject = new();
 
         public static BaseMongoDbRepository<T> GetSubscribingRepository()
         {
@@ -515,7 +516,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
                             CurrentSubscribingRepository = Activator.CreateInstance(exportedType) as BaseMongoDbRepository<T>;
 
                             var pipeline = new EmptyPipelineDefinition<ChangeStreamDocument<T>>().Match("{ operationType: /^[^d]/  }");
-                            ChangeStreamOptions options = new ChangeStreamOptions() { FullDocument = ChangeStreamFullDocumentOption.UpdateLookup };
+                            ChangeStreamOptions options = new() { FullDocument = ChangeStreamFullDocumentOption.UpdateLookup };
                             var changeStream = CurrentSubscribingRepository.CurrentCollection.Watch(pipeline, options).ToEnumerable().GetEnumerator();
 
                             var task = Task.Run(() =>
@@ -539,7 +540,7 @@ namespace Nhea.Data.Repository.MongoDbRepository
                                             receiver.BeginInvoke(CurrentSubscribingRepository, currentData, null, null);
                                         }
                                     }
-                                    catch (Exception ex)
+                                    catch
                                     {
                                     }
                                 }
